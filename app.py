@@ -33,6 +33,13 @@ def hello_get():
     else:
         return "Hello {}, you are {} years old.".format(username, userage)
 
+@app.route("/hello_get2")
+def hello_get2():
+    username = request.args.get("username")
+    userage = request.args.get("userage")
+    return render_template("hello_get.html",
+                           username=username,
+                           userage=userage)
 
 @app.route("/hello_post", methods=["GET", "POST"])
 def hello_post():
