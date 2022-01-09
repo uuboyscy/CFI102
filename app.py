@@ -1,6 +1,9 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify, render_template
+import poker as p
+import series as s
 
-app = Flask(__name__)
+# app = Flask(__name__, static_url_path="/static", static_folder="./static")
+app = Flask(__name__, static_url_path="/static2", static_folder="./test")
 
 @app.route("/")
 def hello():
@@ -9,6 +12,10 @@ def hello():
 @app.route("/hello/<username>")
 def hello2(username):
     return "<h1>Hello {}.</h1>".format(username)
+
+@app.route("/hello2/<username>")
+def hello22(username):
+    return render_template('index.html', username=username)
 
 @app.route("/add/<x>/<y>")
 def add(x, y):
@@ -45,6 +52,20 @@ def hello_post():
         """.format(username)
 
     return outStr
+
+## /getSeries?n=3
+@app.route("/getSeries")
+def getSeries():
+    n = request.args.get("n")
+    result = str(s.Func(int(n)))
+    return result
+
+## /poker?player=5
+@app.route("/poker")
+def poker():
+    player = int(request.args.get("player"))
+    result = p.poker(player)
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
